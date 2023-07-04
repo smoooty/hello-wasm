@@ -5,10 +5,22 @@
     <title>hello-wasm example</title>
   </head>
   <body>
+    <form id="greet-form">
+      <label for="greet-name">What is your name?</label>
+      <input type="text" id="greet-name" name="name" />
+    </form>
     <script type="module">
       import init, { greet } from "./pkg/hello_wasm.js";
       init().then(() => {
-        greet("WebAssembly");
+        const form = document.getElementById('greet-form');
+        form.addEventListener('submit', e => {
+          e.preventDefault();
+
+          const formData = new FormData(form);
+          const name = formData.get("name") || "WebAssembly";
+
+          greet(name);
+        })
       });
     </script>
   </body>
